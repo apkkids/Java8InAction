@@ -1,5 +1,6 @@
 package lambdasinaction.chap5;
 
+import java.io.File;
 import java.util.*;
 import java.util.function.IntSupplier;
 import java.util.stream.*;
@@ -66,7 +67,12 @@ public class BuildingStreams {
               };
          IntStream.generate(fib).limit(10).forEach(System.out::println);
 
-         long uniqueWords = Files.lines(Paths.get("lambdasinaction/chap5/data.txt"), Charset.defaultCharset())
+        File directory = new File("");//设定为当前文件夹
+        String path1=directory.getAbsolutePath();//获取绝对路径
+
+        Path path = Paths.get(path1+"/src/main/java/lambdasinaction/chap5/data.txt");
+        System.out.println(path);
+         long uniqueWords = Files.lines(path, Charset.defaultCharset())
                                  .flatMap(line -> Arrays.stream(line.split(" ")))
                                  .distinct()
                                  .count();
