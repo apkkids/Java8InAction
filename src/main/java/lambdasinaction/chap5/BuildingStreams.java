@@ -22,6 +22,9 @@ public class BuildingStreams {
         int[] numbers = {2, 3, 5, 7, 11, 13};
         System.out.println(Arrays.stream(numbers).sum());
 
+        System.out.println("=============iterate================");
+        int result = Stream.iterate(0,n->n+3).limit(20).reduce(0,(x,y)->x+y);
+        System.out.println(result);
         // Stream.iterate
         Stream.iterate(0, n -> n + 2)
               .limit(10)
@@ -78,7 +81,5 @@ public class BuildingStreams {
                                  .count();
 
          System.out.println("There are " + uniqueWords + " unique words in data.txt");
-
-
     }
 }
