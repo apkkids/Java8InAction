@@ -10,6 +10,10 @@ import static java.util.stream.Collector.Characteristics.*;
 public class PartitionPrimeNumbers {
 
     public static void main(String ... args) {
+        Map<Boolean, List<Integer>> map = IntStream.rangeClosed(2, 30).boxed().collect(partitioningBy(n -> isPrime(n)));
+        System.out.println(map);
+
+
         System.out.println("Numbers partitioned in prime and non-prime: " + partitionPrimes(100));
         System.out.println("Numbers partitioned in prime and non-prime: " + partitionPrimesWithCustomCollector(100));
 
