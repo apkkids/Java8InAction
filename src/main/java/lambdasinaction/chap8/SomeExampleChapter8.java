@@ -17,7 +17,7 @@ public class SomeExampleChapter8 {
         new Thread(r1).start();
         new Thread(r2).start();
 
-        //编译错误
+        //编译错误,lambda 会访问外部的变量
         int a = 0;
         Runnable r3 = ()->{
 //            int a = 6;
