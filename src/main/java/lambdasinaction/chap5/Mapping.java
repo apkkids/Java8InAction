@@ -50,5 +50,13 @@ public class Mapping {
 //                                .filter(pair -> (pair[0] + pair[1]) % 3 == 0)
 //                                .collect(toList());
         pairs.forEach(pair -> System.out.println("(" + pair[0] + ", " + pair[1] + ")"));
+
+        //find first
+        List<Integer> someNumbers = Arrays.asList(1, 2, 3, 4, 5, 6);
+        someNumbers.stream()
+                .map(x->x*x)
+                .filter(x->x%3==0)
+                .findFirst()
+                .ifPresent(x-> System.out.println(x));
     }
 }
