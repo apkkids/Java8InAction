@@ -18,7 +18,8 @@ public class ChainOfResponsibilityMain {
                 (String text) -> "From Raoul, Mario and Alan: " + text;
         UnaryOperator<String> spellCheckerProcessing =
                 (String text) -> text.replaceAll("labda", "lambda");
-        Function<String, String> pipeline = headerProcessing.andThen(spellCheckerProcessing);
+        UnaryOperator<String> lastAdd = (String text) -> text + " , at last ";
+        Function<String, String> pipeline = headerProcessing.andThen(spellCheckerProcessing).andThen(lastAdd);
         String result2 = pipeline.apply("Aren't labdas really sexy?!!");
         System.out.println(result2);
     }
