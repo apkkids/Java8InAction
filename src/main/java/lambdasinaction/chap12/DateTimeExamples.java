@@ -5,13 +5,7 @@ import static java.time.temporal.TemporalAdjusters.nextOrSame;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Month;
+import java.time.*;
 import java.time.chrono.JapaneseDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -22,6 +16,7 @@ import java.time.temporal.TemporalAdjuster;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class DateTimeExamples {
 
@@ -32,11 +27,72 @@ public class DateTimeExamples {
     };
 
     public static void main(String[] args) {
+        useInstant();
         useOldDate();
         useLocalDate();
         useTemporalAdjuster();
         useDateFormatter();
+        useZoneId();
     }
+
+    private static void useZoneId() {
+        System.out.println("=========useZoneId==============");
+        ZoneId zoneId = ZoneId.of("Europe/Rome");
+        System.out.println(zoneId);
+        //TimeZone是老式API
+        ZoneId zoneId1 = TimeZone.getDefault().toZoneId();
+        System.out.println(zoneId1);
+        ZoneId zoneId2 = ZoneId.systemDefault();
+        System.out.println(zoneId2);
+
+        LocalDate date = LocalDate.of(2019, 9, 20);
+        ZonedDateTime zonedDateTime = date.atStartOfDay(zoneId);
+        System.out.println(zonedDateTime);
+        ZonedDateTime zonedDateTime1 = date.atStartOfDay(zoneId1);
+        System.out.println(zonedDateTime1);
+
+        LocalDateTime dateTime = LocalDateTime.of(2019, 9, 20, 17, 24);
+        ZonedDateTime zonedDateTime2 = dateTime.atZone(zoneId);
+        System.out.println(zonedDateTime2);
+
+        Instant instant = Instant.now();
+        ZonedDateTime zonedDateTime3 = instant.atZone(zoneId);
+        System.out.println(zonedDateTime3);
+    }
+
+    private static void useInstant() {
+        Instant i1 = Instant.ofEpochSecond(2);
+        Instant i2 = Instant.ofEpochSecond(2, 3);
+        Instant i3 = Instant.ofEpochSecond(2, 1_000_000_000);
+        Instant i4 = Instant.ofEpochSecond(2, -1_000_000_000);
+
+        System.out.println(i1);
+        System.out.println(i2);
+        System.out.println(i3);
+        System.out.println(i4);
+        System.out.println(Instant.now());
+
+        //Duration主要用于秒和纳秒之间的间隔
+        Duration d1 = Duration.between(LocalDateTime.of(2019, 9, 19, 16, 1, 1),
+                LocalDateTime.of(2019, 9, 19, 16, 3, 0));
+        System.out.println(d1.getSeconds());
+        Duration d2 = Duration.between(LocalTime.of(16, 1, 1), LocalTime.of(16, 3, 3));
+        System.out.println(d2.getSeconds());
+        Duration d3 = Duration.between(Instant.ofEpochSecond(2), Instant.ofEpochSecond(100));
+        System.out.println(d3.getSeconds());
+
+        //Period主要用于年、月、日之间的间隔
+        Duration threeMinutes = Duration.ofMinutes(3);
+        Duration threeSeconds = Duration.of(3, ChronoUnit.SECONDS);
+
+        Period tenDays = Period.ofDays(10);
+        Period threeWeeks = Period.ofWeeks(3);
+        Period twoYearsSixMonthsOneDay = Period.of(2, 6, 1);
+        System.out.println(tenDays);
+        System.out.println(tenDays.getDays());
+
+    }
+
 
     private static void useOldDate() {
         System.out.println("=========useOldDate==============");
@@ -148,12 +204,12 @@ public class DateTimeExamples {
 
         DateTimeFormatter complexFormatter = new DateTimeFormatterBuilder()
                 .appendText(ChronoField.DAY_OF_MONTH)
-                .appendLiteral(". ")
+                .appendLiteral("... ")
                 .appendText(ChronoField.MONTH_OF_YEAR)
-                .appendLiteral(" ")
+                .appendLiteral(" ### ")
                 .appendText(ChronoField.YEAR)
                 .parseCaseInsensitive()
-                .toFormatter(Locale.ITALIAN);
+                .toFormatter(Locale.CHINESE);
 
         System.out.println(date.format(complexFormatter));
     }
